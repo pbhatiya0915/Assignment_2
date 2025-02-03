@@ -145,7 +145,118 @@ namespace Test_Project
             Assert.That(product.ProdName, Is.EqualTo(emptyProdName));
         }
 
+        /*
+        * Tirth Patel 
+        * Unit tests for the Products class are included in this test class, with a particular focus on the StockAmount and ItemPrice properties. 
+        * The provided tests verify that the class operates as directed by testing both valid and invalid scenarios for these properties.
+        * 
+        * The tests for StockAmount check:
+        * 1.When stock is normal, the product will perform as expected if the StockAmount is appropriately set within a valid range (7000).
+        * 2.To make sure the system doesn't accept incorrect input, a problem is raised if the StockAmount goes beyond the allowed range (6).
+        * 3.To verify that only actual stock values are allowed, a problem is raised when the StockAmount crosses the maximum permitted range (700001).
+        * 
+        * The tests for ItemPrice check:
+        * 1.The product's price is accepted when it goes within the valid range of 500, provided that the ItemPrice has been correctly calculated within that range.
+        * 2.Invalid prices are avoided if an problem is raised when the item price drops outside of the allowed range (6).
+        * 3.To make sure the system doesn't allow incorrect price values, a problem is raised when the item price above the maximum allowed price of 7001.
+        * 
+        * These tests were chosen to ensure that the Product class handles both valid and invalid inputs correctly, ensuring robust error handling and input validation.
+        */
 
+
+        [Test]
+        public void StockAmount_ValidRange_ShouldPass()
+        {
+            // Arrange
+            int validProductId = 100;
+            string validProductName = "Valid";
+            decimal validItemPrice = 10;
+            int validStockAmount = 7000;
+
+            // Act
+            var product = new Products(validProductId, validProductName, validItemPrice, validStockAmount);
+
+            // Assert
+            Assert.That(product.StockAmount, Is.EqualTo(validStockAmount));
+        }
+
+
+        [Test]
+        public void StockAmount_BelowRange_ShouldThrowException()
+        {
+            // Arrange
+            int validProductId = 100;
+            string validProductName = "Invalid";
+            decimal validItemPrice = 10;
+            int invalidStockAmount = 6;  // Below minimum valid range
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new Products(validProductId, validProductName, validItemPrice, invalidStockAmount));
+        }
+
+
+        [Test]
+        public void StockAmount_AboveRange_ShouldThrowException()
+        {
+            // Arrange
+            int validProductId = 100;
+            string validProductName = "Invalid";
+            decimal validItemPrice = 10;
+            int invalidStockAmount = 700001;  // Above maximum valid range
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new Products(validProductId, validProductName, validItemPrice, invalidStockAmount));
+        }
+
+
+
+        [Test]
+        public void ItemPrice_ValidRange_ShouldPass()
+        {
+            // Arrange
+            int validProductId = 100;
+            string validProductName = "Valid";
+            decimal validItemPrice = 500;
+            int validStockAmount = 10000;
+
+            // Act
+            var product = new Products(validProductId, validProductName, validItemPrice, validStockAmount);
+
+            // Assert
+            Assert.That(product.ItemPrice, Is.EqualTo(validItemPrice));
+        }
+
+
+        [Test]
+        public void ItemPrice_BelowRange_ShouldThrowException()
+        {
+            // Arrange
+            int validProductId = 100;
+            string validProductName = "Invalid";
+            decimal invalidItemPrice = 6;  // Below minimum valid range
+            int validStockAmount = 10;
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new Products(validProductId, validProductName, invalidItemPrice, validStockAmount));
+        }
+
+
+        [Test]
+        public void ItemPrice_AboveRange_ShouldThrowException()
+        {
+            // Arrange
+            int validProductId = 100;
+            string validProductName = "Invalid";
+            decimal invalidItemPrice = 7001;  // Above maximum valid range
+            int validStockAmount = 10;
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new Products(validProductId, validProductName, invalidItemPrice, validStockAmount));
+        }
 
     }
 }
